@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarBrain AI — AI Engineering & Products</title>
+    <meta name="description" content="Building AI systems that ship. AI/ML development, data engineering, technical leadership, and consulting. 25+ years experience.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-bg: #0a0a0f;
+            --color-bg-subtle: #12121a;
+            --color-text: #e8e8ed;
+            --color-text-muted: #8888a0;
+            --color-accent: #6366f1;
+            --color-accent-glow: rgba(99, 102, 241, 0.3);
+            --color-border: #2a2a3a;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 0;
+            background: linear-gradient(to bottom, var(--color-bg) 0%, transparent 100%);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, #818cf8 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        nav a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--color-text);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: var(--color-accent);
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--color-accent) 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            color: var(--color-text-muted);
+            max-width: 520px;
+            margin-bottom: 40px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: white;
+            box-shadow: 0 0 20px var(--color-accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 30px var(--color-accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-text-muted);
+            background: var(--color-bg-subtle);
+        }
+
+        /* Floating orb */
+        .hero-visual {
+            position: absolute;
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .orb {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, var(--color-accent) 0%, transparent 60%);
+            filter: blur(80px);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-20px, 20px) scale(1.05); }
+        }
+
+        /* Section styles */
+        section {
+            padding: 120px 0;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            letter-spacing: -1px;
+        }
+
+        /* Services */
+        .services {
+            background: var(--color-bg-subtle);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-4px);
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--color-bg-subtle) 0%, var(--color-bg) 100%);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        /* Tech stack */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 48px;
+            padding-top: 48px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .tech-tag {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            padding: 8px 16px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-muted);
+            transition: all 0.2s;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--color-accent);
+            color: var(--color-text);
+        }
+
+        /* About */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        .about-text p {
+            color: var(--color-text-muted);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .stat {
+            background: var(--color-bg-subtle);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-mono);
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--color-text-muted);
+        }
+
+        /* Clients */
+        .clients {
+            background: var(--color-bg-subtle);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .clients-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 32px;
+            justify-content: center;
+        }
+
+        .client-name {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            padding: 12px 0;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .client-name:hover {
+            opacity: 1;
+        }
+
+        /* Contact */
+        .contact {
+            text-align: center;
+        }
+
+        .contact .section-title {
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-description {
+            color: var(--color-text-muted);
+            max-width: 480px;
+            margin: 0 auto 40px;
+            font-size: 16px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .contact-link:hover {
+            color: var(--color-accent);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        footer p a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+        }
+
+        footer p a:hover {
+            color: var(--color-text);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            section {
+                padding: 80px 0;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content > * {
+            animation: fadeUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .hero-label { animation-delay: 0.1s; }
+        .hero h1 { animation-delay: 0.2s; }
+        .hero-description { animation-delay: 0.3s; }
+        .hero-cta { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <span class="logo-icon">✦</span>
+                StarBrain AI
+            </a>
+            <nav>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-label">AI Engineering & Products</div>
+                <h1>Building AI systems <span class="highlight">that ship</span></h1>
+                <p class="hero-description">
+                    From proof-of-concept to production. I help companies implement AI that actually works — 
+                    not just demos, but systems that run, scale, and deliver value.
+                </p>
+                <div class="hero-cta">
+                    <a href="#contact" class="btn btn-primary">Get in touch</a>
+                    <a href="#services" class="btn btn-secondary">View services</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="orb"></div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-label">What I do</div>
+            <h2 class="section-title">Services</h2>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h3>AI/ML Development</h3>
+                    <p>End-to-end machine learning systems, from prototype to production. Model development, training pipelines, and deployment infrastructure.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◈</div>
+                    <h3>Data Engineering</h3>
+                    <p>Scalable data pipelines, platforms, and infrastructure. Building the foundation that makes AI possible.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">△</div>
+                    <h3>Technical Leadership</h3>
+                    <p>Architecture decisions, code review, and team guidance. Bringing clarity to complex technical challenges.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◐</div>
+                    <h3>AI Strategy & Consulting</h3>
+                    <p>Helping companies move from POC to real-world implementation. Cutting through the hype to find what works.</p>
+                </div>
+            </div>
+
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Go</span>
+                <span class="tech-tag">AWS</span>
+                <span class="tech-tag">GCP</span>
+                <span class="tech-tag">PyTorch</span>
+                <span class="tech-tag">TensorFlow</span>
+                <span class="tech-tag">MLflow</span>
+                <span class="tech-tag">Vector DBs</span>
+                <span class="tech-tag">LLMs</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="section-label">About</div>
+                    <h2 class="section-title">Erik Stabij</h2>
+                    <p>
+                        25+ years in software engineering — from embedded systems and big data pipelines 
+                        to ML models in production. Now focused on applied AI: helping companies move 
+                        from proof-of-concept to real-world implementation.
+                    </p>
+                    <p>
+                        At StarBrain AI, I build AI-powered products and services. Previously delivered 
+                        for clients including Brenntag, PwC, bol.com, Takeaway, and Talpa TV.
+                    </p>
+                    <p>
+                        Based in the Netherlands. Remote-first.
+                    </p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Years experience</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Projects delivered</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">AI</div>
+                        <div class="stat-label">Current focus</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">NL</div>
+                        <div class="stat-label">Based in</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="clients">
+        <div class="container">
+            <div class="section-label" style="text-align: center;">Selected clients</div>
+            <div class="clients-list">
+                <span class="client-name">Brenntag</span>
+                <span class="client-name">PwC</span>
+                <span class="client-name">bol.com</span>
+                <span class="client-name">Takeaway</span>
+                <span class="client-name">Talpa TV</span>
+                <span class="client-name">de Persgroep</span>
+                <span class="client-name">Varian Medical</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-label">Let's talk</div>
+            <h2 class="section-title">Have a project in mind?</h2>
+            <p class="contact-description">
+                Open to consulting, freelance projects, and conversations about AI that actually works.
+            </p>
+            <div class="hero-cta" style="justify-content: center;">
+                <a href="mailto:erik@starbrain.ai" class="btn btn-primary">Email me</a>
+                <a href="https://linkedin.com/in/erikstabij" target="_blank" class="btn btn-secondary">LinkedIn</a>
+            </div>
+            <div class="contact-links" style="margin-top: 40px;">
+                <a href="mailto:erik@starbrain.ai" class="contact-link">
+                    <span>→</span> erik@starbrain.ai
+                </a>
+                <a href="https://linkedin.com/in/erikstabij" target="_blank" class="contact-link">
+                    <span>→</span> linkedin.com/in/erikstabij
+                </a>
+                <a href="https://github.com/erikstabij" target="_blank" class="contact-link">
+                    <span>→</span> GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 StarBrain AI · <a href="https://starbrain.ai">starbrain.ai</a> · Netherlands</p>
+        </div>
+    </footer>
+</body>
+</html>
